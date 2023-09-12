@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_CTEAM_HK_YT</name>
+	<author>Lucas Stoller @ 360 Communi'Team</author>
+	<creationDate>August 2023</creationDate>
+	<copyright>Copyright (C) 2023 360 Communi'Team. All rights reserved.</copyright>
+	<license>GNU General Public License</license>
+	<authorEmail>info@360cteam.com</authorEmail>
+	<authorUrl>https://360cteam.com</authorUrl>
+	<version>0.0.2</version>
+	<description>PLG_SYSTEM_CTEAM_HK_YT_XML_DESCRIPTION</description>
+    <scriptfile>install.script.php</scriptfile>
+	<files>
+        <filename plugin="cteam_hikashop_yoothemizer">cteam_hikashop_yoothemizer.php</filename>
+		<folder>modules</folder>
+		<folder>language</folder>
+		<folder>templates</folder>
+    </files>
+	<languages folder="language">
+		<language tag="fr-FR">fr-FR/fr-FR.plg_system_cteam_hikashop_yoothemizer.sys.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.plg_system_cteam_hikashop_yoothemizer.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+		</fields>
+	</config>
+	<!--<updateservers>
+		<server type="extension" name="360 Communi'Team - YooTheme - MODAL updates">https://360cteam.com/media/com_extdeployer/deployments/cteam_hikashop_yoothemizer/updates.xml</server>
+	</updateservers>-->
+</extension>
