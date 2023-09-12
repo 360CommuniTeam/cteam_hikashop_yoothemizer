@@ -139,82 +139,47 @@ window.localPage.switcherDisplay = function (oldClass, newClass, delay, target) 
 <?php
 	}
 
-	if($this->config->get('show_quantity_field') >= 2 && empty($this->tmpl_ajax)) {
-?>
-	<form action="<?php echo hikashop_completeLink('product&task=updatecart'); ?>" method="post" name="hikashop_product_form_<?php echo $mainDivName; ?>" enctype="multipart/form-data">
-<?php
-	}
-
-	if($enableCarousel) {
-		$this->setLayout('carousel');
-		echo $this->loadTemplate();
-	} else {
-		$width = (int)(100 / $columns) - 1;
-		$current_column = 1;
-		$current_row = 1;
-
-		switch($columns) {
-			case 12:
-			case 6:
-			case 4:
-			case 3:
-			case 2:
-			case 1:
-				$row_fluid = 12;
-				$span = $row_fluid / $columns;
-				break;
-			case 10:
-			case 8:
-			case 7:
-				$row_fluid = $columns;
-				$span = 1;
-				break;
-			case 5:
-				$row_fluid = 10;
-				$span = 2;
-				break;
-			case 9: // special case
-				$row_fluid = 10;
-				$span = 1;
-				break;
-		}
-
-		if($row_fluid == 12)
-			echo '<div class="hk-row-fluid">';
-		else
-			echo '<div class="hk-row-fluid hk-row-'.$row_fluid.'">';
-
-		$itemLayoutType = $this->params->get('div_item_layout_type');
-		if(empty($itemLayoutType))
-			$itemLayoutType = 'img_title';
-
-		foreach($this->rows as $row) {
-?>
-		<div class="hkc-md-<?php echo (int)$span; ?> hikashop_product hikashop_product_column_<?php echo $current_column; ?> hikashop_product_row_<?php echo $current_row; ?>"
-			itemprop="itemList" itemscope="" itemtype="http://schema.org/ItemList">
-			<div class="hikashop_container <?php echo $classZoom; ?>">
-				<div class="hikashop_subcontainer <?php echo $this->borderClass; ?>">
-<?php
-			$this->quantityLayout = $this->getProductQuantityLayout($row);
-			$this->row =& $row;
-			$this->setLayout('listing_' . $itemLayoutType);
+	if ( $this->config->get("show_quantity_field") >= 2 && empty($this->tmpl_ajax) ) : ?>
+		<form
+			action="<?= hikashop_completeLink("product&task=updatecart"); ?>"
+			method="post" name="hikashop_product_form_<?= $mainDivName; ?>"
+			enctype="multipart/form-data"
+		>
+		<?php endif;?>
+	
+		<?php if ($enableCarousel) :
+			$this->setLayout("carousel");
 			echo $this->loadTemplate();
-			unset($this->row);
-?>
-				</div>
-			</div>
-		</div>
-<?php
-			if($current_column >= $columns) {
-				$current_row++;
-				$current_column = 0;
+		else :
+			$itemLayoutType = $this->params->get("div_item_layout_type");
+			if (empty($itemLayoutType)) {
+				$itemLayoutType = "img_title";
 			}
-			$current_column++;
-		}
+		?>
+	
+			<div class="uk-child-width-1-<?= $columns ?>" uk-grid>
+	
+				<?php foreach ($this->rows as $row) : ?>
+					<div class="hikashop_product"
+					itemprop="itemList" itemscope="" itemtype="http://schema.org/ItemList">
+						<div class="hikashop_container <?= $classZoom; ?>">
+							<div class="hikashop_subcontainer <?= $this->borderClass; ?>">
+								<?php
+								$this->quantityLayout = $this->getProductQuantityLayout($row);
+								$this->row = &$row;
+								$this->setLayout("listing_" . $itemLayoutType);
+								echo $this->loadTemplate();
+								unset($this->row);
+								?>
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+	
+			</div>
+	
+		<?php endif; /* ($enableCarousel) */ ?>
 
-		echo '</div>';
-	}
-?> <div style="clear:both"></div>
 <?php
 
 	if($infinite_scroll && $this->pageInfo->elements->page > 1) {
