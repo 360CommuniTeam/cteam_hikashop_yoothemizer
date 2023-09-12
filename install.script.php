@@ -86,7 +86,7 @@ class plgSystemCTeam_Hikashop_YoothemizerInstallerScript
     private function installTpl() {
 
         $allFiles = self::getTplFilesManifest();
-        var_dump($allFiles);
+        
         // Get active template path from anywhere on Joomla: 
         $app    = Factory::getApplication();
         $yoothemePath   = JPATH_ROOT . '/templates/yootheme/';
