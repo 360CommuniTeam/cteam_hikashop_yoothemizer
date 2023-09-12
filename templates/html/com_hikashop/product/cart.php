@@ -76,6 +76,7 @@ if(empty($this->rows)) {
 
 	if(!in_array($tmpl, array('component', 'ajax', 'raw'))) {
 ?>
+
 <div id="hikashop_cart_<?php echo $module_id; ?>" class="hikashop_cart">
 <?php
 	}
@@ -206,9 +207,7 @@ if(!empty($small_cart)) {
 	}
 ?>
 <!-- MINI CART MAIN LINK -->
-	<a class="hikashop_small_cart_checkout_link" href="<?php echo $link; ?>"<?php echo $extra_data; ?>>
-		<span class="hikashop_small_cart_total_title"><?php echo $icon_html . $text; ?></span>
-	</a>
+	<a class="hikashop_small_cart_checkout_link" href="<?= $link; ?>"<?php echo $extra_data; ?> title="<?= $text; ?>" uk-icon="icon: cart"></a>
 <!-- EO MINI CART MAIN LINK -->
 <!-- MINI CART PRINT CART BUTTON -->
 <?php
