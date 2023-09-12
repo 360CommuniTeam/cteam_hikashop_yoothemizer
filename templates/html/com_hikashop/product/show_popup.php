@@ -6,6 +6,9 @@
  * @copyright	(C) 2010-2023 HIKARI SOFTWARE. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
+
+use YOOtheme\Config;
+
 defined('_JEXEC') or die('Restricted access');
 ?><?php
 
@@ -26,7 +29,19 @@ $mainDivName = $this->params->get('main_div_name', '');
 
 $link_content = $this->link_content;
 $url_link = 'product&task=show&cid=' . (int)$this->row->product_id . '&name=' . $this->row->alias . $this->itemid . $this->category_pathway;
+
 $link = hikashop_contentLink($url_link, $this->row);
+
+$yooConfig = YOOTheme\app(Config::class);
+
+$shopUrl = $yooConfig('~hkyt.shop_url');
+
+// TODO : Remove that when the YooTheme plugin is created
+if($shopUrl == null) {
+	$shopUrl = 'shop';
+}
+
+$link = str_replace('component/hikashop', $shopUrl, $link);
 
 if(is_numeric($popup_mode)) 
 	$popup_mode = (int)$popup_mode;
