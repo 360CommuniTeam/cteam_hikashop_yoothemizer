@@ -1,6 +1,6 @@
 <?php 
 
-namespace Cteam\Plugin\Yoothememodal;
+namespace Cteam\Plugin\HikashopYOOThemizer;
 
 use YOOtheme\Theme\Styler\StylerConfig;
 

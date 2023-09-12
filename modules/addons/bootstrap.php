@@ -12,10 +12,10 @@ use YOOtheme\Path;
 use YOOtheme\Theme\Styler\StylerConfig;
 use YOOtheme\Translator;
 
-use Cteam\Plugin\Yoothememodal\AssetsListener;
-use Cteam\Plugin\Yoothememodal\SettingsListener;
-use Cteam\Plugin\Yoothememodal\SourceListener;
-use Cteam\Plugin\Yoothememodal\StyleListener;
+use Cteam\Plugin\HikashopYOOThemizer\AssetsListener;
+use Cteam\Plugin\HikashopYOOThemizer\SettingsListener;
+use Cteam\Plugin\HikashopYOOThemizer\SourceListener;
+use Cteam\Plugin\HikashopYOOThemizer\StyleListener;
 
 return [
 
@@ -59,7 +59,7 @@ return [
 
 ];
 
-class CteamModalTranslator {
+class CteamHikashopYOOThemeTranslator {
 
     function initCustomizer(Config $config, Translator $translator) {
 
