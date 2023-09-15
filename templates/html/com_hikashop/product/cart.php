@@ -8,6 +8,12 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?><?php
+use YOOtheme\Config;
+
+$config = \YOOtheme\app(Config::class);
+$config->addAlias('~hk-yoothemizer', '~theme.hk-yoothemizer');
+
+
 $tmpl = hikaInput::get()->getWord('tmpl', '');
 $module_id = (int)$this->params->get('id', 0);
 
@@ -194,20 +200,25 @@ if(!empty($small_cart)) {
 	}
 	unset($this->row);
 
-	$extra_data = '';
+	// TODO : Remove commented lines
+	//$extra_data = '';
 	if($this->element->cart_type == 'cart') {
 		$link = $this->url_checkout;
 	} else {
 		$link = hikashop_completeLink('cart&task=showcart&cart_id='.$this->element->cart_id.'&cart_type='.$this->element->cart_type . $this->cart_itemid);
 	}
 	if($small_cart == 2) {
-		$extra_data .= ' onclick="if(window.hikashop.toggleOverlayBlock(\'hikashop_cart_dropdown_'.$module_id.'\')) return false;"';
+		//$extra_data .= ' onclick="if(window.hikashop.toggleOverlayBlock(\'hikashop_cart_dropdown_'.$module_id.'\')) return false;"';
 	}elseif($small_cart == 3) {
-		$extra_data .= ' ontouchend="window.hikashop.toggleOverlayBlock(\'hikashop_cart_dropdown_'.$module_id.'\', \'hover\'); return false;" onmouseover="window.hikashop.toggleOverlayBlock(\'hikashop_cart_dropdown_'.$module_id.'\', \'hover\'); return false;"';
+		//$extra_data .= ' ontouchend="window.hikashop.toggleOverlayBlock(\'hikashop_cart_dropdown_'.$module_id.'\', \'hover\'); return false;" onmouseover="window.hikashop.toggleOverlayBlock(\'hikashop_cart_dropdown_'.$module_id.'\', \'hover\'); return false;"';
 	}
 ?>
 <!-- MINI CART MAIN LINK -->
-	<a class="hikashop_small_cart_checkout_link" href="<?= $link; ?>"<?php echo $extra_data; ?> title="<?= $text; ?>" uk-icon="icon: cart"></a>
+	<a class="hikashop_small_cart_checkout_link"
+		href="<?= $link; ?>"
+		uk-tooltip="title: <?= $text; ?>; pos:right"
+		uk-icon="icon: <?= $config('~hk-yoothemizer.cart_icon') ?>"
+	></a>
 <!-- EO MINI CART MAIN LINK -->
 <!-- MINI CART PRINT CART BUTTON -->
 <?php
@@ -258,7 +269,11 @@ if(!empty($small_cart)) {
 	if($v != 0) $alignment .= 'right:'.(-$v).'px;';
 ?>
 	<div class="hikashop_cart_dropdown_container">
-	<div class="hikashop_cart_dropdown_content" id="hikashop_cart_dropdown_<?php echo $module_id; ?>" style="display:none;<?php echo $alignment; ?>">
+	<div
+		class="hikashop_cart_dropdown_content uk-width-<?= $config('~hk-yoothemizer.cart_width') ?>"
+		id="hikashop_cart_dropdown_<?= $module_id; ?>"
+		uk-dropdown="toggle: #hikashop_cart_<?= $module_id; ?>;mode:hover;"
+	>
 <?php
 }
 $shows = array(
@@ -577,18 +592,71 @@ foreach($this->element->products as $k => $product) {
 <!-- QUANTITY INPUT -->
 <?php
 	if(!empty($columns['quantity'])) {
+		if(empty($this->cartHelper)) $this->cartHelper = hikashop_get('helper.cart');
 ?>
-				<td class="hikashop_cart_module_product_quantity_value hikashop_cart_value"><?php
-		$this->row =& $product;
-		$this->quantityLayout = $this->cartHelper->getProductQuantityLayout($this->row);
-		echo $this->loadHkLayout('quantity', array(
-			'id_prefix' => 'hikashop_cart_'.$module_id.'_quantity_field',
-			'quantity_fieldname' => 'item['.$product->cart_product_id.'][cart_product_quantity]',
-			'onchange_script' => ' window.hikashop.checkQuantity(this); if(this.value == '.(int)$product->cart_product_quantity.'){ return; } if(this.form.onsubmit && !this.form.onsubmit()) return; this.form.submit();',
-			'onincrement_script' => ' window.hikashop.updateQuantity(this,\'{id}\'); var input = document.getElementById(\'{id}\'); if(input.value == '.(int)$product->cart_product_quantity.'){ return false; } if(input.form.onsubmit && !input.form.onsubmit()) return false; input.form.submit(); return false;',
-			'refresh_task' => 'updatecart',
-		));
-				?></td>
+		<td class="hikashop_cart_module_product_quantity_value hikashop_cart_value"><?php
+			$this->row =& $product;
+			$this->quantityLayout = $this->cartHelper->getProductQuantityLayout($this->row);
+
+			$extra_data_attribute = '';
+			$quantity_counter = $this->cartHelper->getQuantityCounter($this);
+			$quantity_fieldname = $this->params->get('quantity_fieldname', 'quantity');
+			$quantityFieldId = 'hikashop_cart_'.$module_id.'_quantity_field_'.$quantity_counter;
+
+			if(isset($this->row) && isset($this->row->product_min_per_order)) {
+				$min_quantity = ($this->row->product_min_per_order || empty($this->row->parent_product)) ? $this->row->product_min_per_order : $this->row->parent_product->product_min_per_order;
+				$max_quantity = ($this->row->product_max_per_order || empty($this->row->parent_product)) ? $this->row->product_max_per_order : $this->row->parent_product->product_max_per_order;
+				$min_quantity = max($min_quantity, 1);
+				$max_quantity = max($max_quantity, 0);
+				if($this->row->product_quantity > 0) {
+					if($max_quantity == 0)
+						$max_quantity = $this->row->product_quantity;
+					else
+						$max_quantity = min($max_quantity, $this->row->product_quantity);
+				}
+			} else {
+				$min_quantity = max((int)$this->params->get('min_quantity', 0), 1);
+				$max_quantity = max((int)$this->params->get('max_quantity', 0), 0);
+			}
+
+			$current_quantity = (int)$this->params->get('product_quantity', $min_quantity);
+
+			if(isset($this->row) && isset($this->row->cart_product_quantity)) {
+				$current_quantity = (int)$this->row->cart_product_quantity;
+				$extra_data_attribute .= ' data-hk-allow-zero="true"';
+			}
+
+			/*echo $this->loadHkLayout('quantity', array(
+				'id_prefix' => 'hikashop_cart_'.$module_id.'_quantity_field',
+				'quantity_fieldname' => 'item['.$product->cart_product_id.'][cart_product_quantity]',
+				'onchange_script' => ' window.hikashop.checkQuantity(this); if(this.value == '.(int)$product->cart_product_quantity.'){ return; } if(this.form.onsubmit && !this.form.onsubmit()) return; this.form.submit();',
+				'onincrement_script' => ' window.hikashop.updateQuantity(this,\'{id}\'); var input = document.getElementById(\'{id}\'); if(input.value == '.(int)$product->cart_product_quantity.'){ return false; } if(input.form.onsubmit && !input.form.onsubmit()) return false; input.form.submit(); return false;',
+				'refresh_task' => 'updatecart',
+			));*/
+				?>
+			<div class="uk-input-quantity">
+				<div class="uk-grid-collapse" uk-grid>
+					<div class="uk-width-1-3">
+						<input id="<?= $quantityFieldId; ?>"
+							value="<?= $current_quantity; ?>"
+							class="uk-input<?= HIKASHOP_J40 ? ' hika_j4' : '' ?>"
+							type="number"
+							name="<?= $quantity_fieldname; ?>"
+							data-hk-qty-old="<?= $current_quantity; ?>"
+							data-hk-qty-min="<?= $min_quantity; ?>"
+							data-hk-qty-max="<?= $max_quantity; ?>"
+							<?= $extra_data_attribute; ?>
+							aria-label="Input"
+						>
+					</div>
+					<div class="uk-width-2-3">
+						<button class="uk-button uk-button-default">+</button>
+						<button class="uk-button uk-button-default">-</button>
+					</div>
+				</div>
+			</div>
+		
+		</td>
 <?php
 	}
 ?>
@@ -692,7 +760,7 @@ if($this->params->get('show_cart_quantity', 1)) {
 <?php
 if($this->element->cart_type == 'cart' && $this->params->get('show_cart_proceed', 1)) {
 ?>
-	<a class="<?php echo $css_button . ' ' . $css_button_checkout; ?>" href="<?php echo $this->url_checkout; ?>" onclick="if(this.disable) return false; this.disable = true;"><span><?php
+	<a class="uk-button uk-button-primary" href="<?php echo $this->url_checkout; ?>" onclick="if(this.disable) return false; this.disable = true;"><span><?php
 		echo JText::_('PROCEED_TO_CHECKOUT');
 	?></span></a>
 <?php
