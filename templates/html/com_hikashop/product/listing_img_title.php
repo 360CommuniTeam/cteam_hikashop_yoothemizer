@@ -22,63 +22,68 @@ if(!empty($this->row->extraData->top)) { echo implode("\r\n",$this->row->extraDa
 
 ?>
 <div class="<?php echo implode(' ',$hk_main_classes); ?>" id="div_<?php echo $mainDivName.'_'.$this->row->product_id;  ?>">
-<!-- IMAGE -->
-	<div class="hikashop_product_image">
-		<div class="hikashop_product_image_subdiv">
-<?php
-	$img = $this->image->getThumbnail(
-		@$this->row->file_path,
-		array('width' => $this->image->main_thumbnail_x, 'height' => $this->image->main_thumbnail_y),
-		array('default' => true,'forcesize'=>$this->config->get('image_force_size',true),'scale'=>$this->config->get('image_scale_mode','inside'))
-	);
-	if($img->success) {
-		$html = '<img class="hikashop_product_listing_image" title="'.$this->escape((string)@$this->row->file_description).'" alt="'.$this->escape((string)@$this->row->file_name).'" src="'.$img->url.'"/>';
-		if($this->config->get('add_webp_images', 1) && function_exists('imagewebp') && !empty($img->webpurl)) {
-			$html = '
-			<picture>
-				<source srcset="'.$img->webpurl.'" type="image/webp">
-				<source srcset="'.$img->url.'" type="image/'.$img->ext.'">
-				'.$html.'
-			</picture>
-			';
+	<div class="uk-card-media-top">
+	<!-- IMAGE -->
+		<div class="hikashop_product_image">
+			<div class="hikashop_product_image_subdiv">
+	<?php
+		$img = $this->image->getThumbnail(
+			@$this->row->file_path,
+			array('width' => $this->image->main_thumbnail_x, 'height' => $this->image->main_thumbnail_y),
+			array('default' => true,'forcesize'=>$this->config->get('image_force_size',true),'scale'=>$this->config->get('image_scale_mode','inside'))
+		);
+		if($img->success) {
+			$html = '<img class="hikashop_product_listing_image" title="'.$this->escape((string)@$this->row->file_description).'" alt="'.$this->escape((string)@$this->row->file_name).'" src="'.$img->url.'"/>';
+			if($this->config->get('add_webp_images', 1) && function_exists('imagewebp') && !empty($img->webpurl)) {
+				$html = '
+				<picture>
+					<source srcset="'.$img->webpurl.'" type="image/webp">
+					<source srcset="'.$img->url.'" type="image/'.$img->ext.'">
+					'.$html.'
+				</picture>
+				';
+			}
+			$this->link_content = $html;
+			$this->setLayout('show_popup');
+			echo $this->loadTemplate();
+	?>		<meta itemprop="image" content="<?php echo $img->url; ?>"/>
+	<?php
 		}
-		$this->link_content = $html;
-		$this->setLayout('show_popup');
-		echo $this->loadTemplate();
-?>		<meta itemprop="image" content="<?php echo $img->url; ?>"/>
-<?php
-	}
-	if($this->params->get('display_badges', 1)) {
-		$this->classbadge->placeBadges($this->image, $this->row->badges, array('vertical' => -10, 'horizontal' => 0, 'thumbnail' => $img));
-	}
-?>
+		if($this->params->get('display_badges', 1)) {
+			$this->classbadge->placeBadges($this->image, $this->row->badges, array('vertical' => -10, 'horizontal' => 0, 'thumbnail' => $img));
+		}
+	?>
+			</div>
 		</div>
 	</div>
 <!-- EO IMAGE -->
 
-<!-- PRICE -->
-<?php
-	if($this->params->get('show_price','-1')=='-1'){
-		$config =& hikashop_config();
-		$this->params->set('show_price',$config->get('show_price'));
-	}
-	if($this->params->get('show_price')){
-		$this->setLayout('listing_price');
-		echo $this->loadTemplate();
-	}
-?>
-<!-- EO PRICE -->
-
+<div class="uk-card-body">
 <!-- NAME -->
-	<span class="hikashop_product_name">
+	<h2 class="uk-h4 uk-margin-remove-bottom hikashop_product_name">
 <?php
 		$this->link_content = $this->row->product_name;
 		$this->setLayout('show_popup');
 		echo $this->loadTemplate();
 ?>
-	</span>
+	</h2>
 	<meta itemprop="name" content="<?php echo $this->escape(strip_tags($this->row->product_name)); ?>">
 <!-- EO NAME -->
+
+<!-- PRICE -->
+<div class="uk-text-meta uk-margin-small uk-margin-remove-top">
+	<?php
+		if($this->params->get('show_price','-1')=='-1'){
+			$config =& hikashop_config();
+			$this->params->set('show_price',$config->get('show_price'));
+		}
+		if($this->params->get('show_price')){
+			$this->setLayout('listing_price');
+			echo $this->loadTemplate();
+		}
+	?>
+</div>
+<!-- EO PRICE -->
 
 <!-- CODE -->
 	<span class='hikashop_product_code_list'>
@@ -168,8 +173,8 @@ if($this->params->get('add_to_cart') || $this->params->get('add_to_wishlist')) {
 <!-- COMPARISON -->
 <?php
 if(hikaInput::get()->getVar('hikashop_front_end_main', 0) && hikaInput::get()->getVar('task') == 'listing' && $this->params->get('show_compare')) {
-	$css_button = $this->config->get('css_button', 'hikabtn');
-	$css_button_compare = $this->config->get('css_button_compare', 'hikabtn-compare');
+	$css_button = 'uk-button uk-button-default';
+	$css_button_compare = 'uk-button uk-button-default';
 ?>
 	<br/>
 <?php
@@ -197,7 +202,7 @@ if(hikaInput::get()->getVar('hikashop_front_end_main', 0) && hikaInput::get()->g
 <?php
 	$contact = (int)$this->config->get('product_contact', 0);
 	if(hikashop_level(1) && $this->params->get('product_contact_button', 0) && ($contact == 2 || ($contact == 1 && !empty($this->row->product_contact)))) {
-		$css_button = $this->config->get('css_button', 'hikabtn');
+		$css_button = 'uk-button uk-button-default';
 		$attributes = 'class="'.$css_button.'"';
 		$fallback_url = hikashop_completeLink('product&task=contact&cid=' . (int)$this->row->product_id . $this->itemid);
 		$content = JText::_('CONTACT_US_FOR_INFO');
@@ -214,7 +219,7 @@ if(hikaInput::get()->getVar('hikashop_front_end_main', 0) && hikaInput::get()->g
 	if($details_button) {
 		$this->link_content = JText::_('PRODUCT_DETAILS');
 		$this->type = 'detail';
-		$this->css_button = $this->config->get('css_button', 'hikabtn');
+		$this->css_button = 'uk-button uk-button-default';
 		$this->setLayout('show_popup');
 		echo $this->loadTemplate();
 	}
@@ -224,20 +229,7 @@ if(hikaInput::get()->getVar('hikashop_front_end_main', 0) && hikaInput::get()->g
 
 	<meta itemprop="url" content="<?php echo $link; ?>">
 </div>
+</div>
 <?php
 
 if(!empty($this->row->extraData->bottom)) { echo implode("\r\n",$this->row->extraData->bottom); }
-
-if(isset($this->rows[0]) && $this->rows[0]->product_id == $this->row->product_id) {
-	$css = '';
-	if((int)$this->image->main_thumbnail_y>0){
-		$css .= '
-#'.$mainDivName.' .hikashop_product_image { height:'.(int)$this->image->main_thumbnail_y.'px; }';
-	}
-	if((int)$this->image->main_thumbnail_x>0){
-		$css .= '
-#'.$mainDivName.' .hikashop_product_image_subdiv { width:'.(int)$this->image->main_thumbnail_x.'px; }';
-	}
-	$doc = JFactory::getDocument();
-	$doc->addStyleDeclaration($css);
-}

@@ -104,7 +104,7 @@ if(!empty($this->rows)) {
 
 		$onclick_params = "'display_grid', 'display_list','".$delay."', 'hikashop_products_switcher_".$mainDivName."'";
 		$onclick = 'onclick="window.localPage.switcherDisplay('.$onclick_params.'); return false;" data-toggle="hk-tooltip" data-original-title="'.JText::_( 'HIKASHOP_SWITCHER_GRID' ).'"';
-		$attributes = 'class="'.$css_button.' hikashop_switcher_grid" '. $onclick;
+		$attributes = 'class="uk-button uk-button-default hikashop_switcher_grid" '. $onclick;
 		$fallback_url = "";
 		$content = '<span class="btnIcon hk-icon">'.
 			'<i class="fas fa-th"></i>'.
@@ -114,7 +114,7 @@ if(!empty($this->rows)) {
 
 		$onclick_params = "'display_list', 'display_grid','".$delay."', 'hikashop_products_switcher_".$mainDivName."'";
 		$onclick = 'onclick="window.localPage.switcherDisplay('.$onclick_params.'); return false;" data-toggle="hk-tooltip" data-original-title="'.JText::_( 'HIKASHOP_SWITCHER_LIST' ).'"';
-		$attributes = 'class="'.$css_button.' hikashop_switcher_list" '. $onclick;
+		$attributes = 'class="uk-button uk-button-default hikashop_switcher_list" '. $onclick;
 		$content = '<span class="btnIcon hk-icon">'.
 			'<i class="fas fa-th-list"></i>'.
 		'</span>';
@@ -157,21 +157,19 @@ window.localPage.switcherDisplay = function (oldClass, newClass, delay, target) 
 			}
 		?>
 	
-			<div class="uk-child-width-1-<?= $columns ?>" uk-grid>
+			<div class="uk-child-width-1-<?= $columns ?> uk-grid-match" uk-grid>
 	
 				<?php foreach ($this->rows as $row) : ?>
-					<div class="hikashop_product"
-					itemprop="itemList" itemscope="" itemtype="http://schema.org/ItemList">
-						<div class="hikashop_container <?= $classZoom; ?>">
-							<div class="hikashop_subcontainer <?= $this->borderClass; ?>">
-								<?php
-								$this->quantityLayout = $this->getProductQuantityLayout($row);
-								$this->row = &$row;
-								$this->setLayout("listing_" . $itemLayoutType);
-								echo $this->loadTemplate();
-								unset($this->row);
-								?>
-							</div>
+					<div class="hikashop_product" itemprop="itemList" itemscope="" itemtype="http://schema.org/ItemList">
+						<div class="uk-card uk-card-default uk-card-hover <?= $classZoom; ?>">
+							
+							<?php
+							$this->quantityLayout = $this->getProductQuantityLayout($row);
+							$this->row = &$row;
+							$this->setLayout("listing_" . $itemLayoutType);
+							echo $this->loadTemplate();
+							unset($this->row);
+							?>
 						</div>
 					</div>
 				<?php endforeach; ?>

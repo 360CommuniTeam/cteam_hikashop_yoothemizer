@@ -275,9 +275,9 @@ switch($quantityLayout) {
 		}
 	case 'show_default_div':
 ?>
-		<div id="<?php echo $id; ?>_area" class="hikashop_product_quantity_input_div_default_main">
+		<div id="<?php echo $id; ?>_area" class="hikashop_product_quantity_input_div_default_main uk-input-quantity">
 			<div class="hikashop_product_quantity_div hikashop_product_quantity_input_div_default">
-				<input id="<?php echo $id; ?>" type="text" value="<?php echo $current_quantity; ?>" onfocus="this.select()" class="hikashop_product_quantity_field <?php echo $extra_classes; ?>" name="<?php echo $name; ?>" data-hk-qty-min="<?php echo $min_quantity; ?>" data-hk-qty-max="<?php echo $max_quantity; ?>" onchange="window.hikashop.checkQuantity(this);" />
+				<input id="<?php echo $id; ?>" type="text" value="<?php echo $current_quantity; ?>" onfocus="this.select()" class="uk-input uk-background-default hikashop_product_quantity_field <?php echo $extra_classes; ?>" name="<?php echo $name; ?>" data-hk-qty-min="<?php echo $min_quantity; ?>" data-hk-qty-max="<?php echo $max_quantity; ?>" onchange="window.hikashop.checkQuantity(this);" />
 			</div>
 			<div class="hikashop_product_quantity_div hikashop_product_quantity_change_div_default">
 				<div class="hikashop_product_quantity_change_div_plus_default">

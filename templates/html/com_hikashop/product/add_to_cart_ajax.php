@@ -167,7 +167,7 @@ if(($add_to_cart || $add_to_wishlist) && (($has_fields && $display_fields) || $d
 <!-- ADD TO CART BUTTON -->
 <?php
 if($add_to_cart && !$has_options && !$global_on_listing) {
-	$attributes = ' class="uk-button ' . $css_button . ' ' . $css_button_cart. '" onclick="if(window.hikashop.addToCart) { return window.hikashop.addToCart(this); }" data-addToCart="'.$this->row->product_id.'" data-addTo-div="'.$this->params->get('main_div_name').'" data-addTo-class="add_in_progress"';
+	$attributes = ' class="uk-button uk-button-primary ' . $css_button . ' ' . $css_button_cart. '" onclick="if(window.hikashop.addToCart) { return window.hikashop.addToCart(this); }" data-addToCart="'.$this->row->product_id.'" data-addTo-div="'.$this->params->get('main_div_name').'" data-addTo-class="add_in_progress"';
 	if(!empty($this->last_quantity_field_id))
 		$attributes .= ' id="'.$this->last_quantity_field_id.'_add_to_cart_button"';
 	if(!empty($this->row->product_addtocart_message))
