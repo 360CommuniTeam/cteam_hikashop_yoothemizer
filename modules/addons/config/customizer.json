@@ -1,1 +1,37 @@
-{}
+{
+    "sections": {
+        "hk-yoothemizer": {
+            "title": "HikaShop",
+            "width": 400,
+            "priority": 100,
+            "fields": {
+                "hk-yoothemizer.cart": {
+                    "label": "Panier",
+                    "type": "group",
+                    "divider": true,
+                    "fields": {
+                        "hk-yoothemizer.cart_icon": {
+                            "label": "Icon",
+                            "type": "icon",
+                            "description": "The icon used to display the cart module.",
+                            "default": "cart"
+                        },
+                        "hk-yoothemizer.cart_width": {
+                            "label": "Width",
+                            "type": "select",
+                            "description": "The icon used to display the cart module.",
+                            "options": {
+                                "Small": "small",
+                                "Medium": "medium",
+                                "Large": "large",
+                                "Extra Large": "xlarge",
+                                "2x Large": "2xlarge"
+                            },
+                            "default": "small"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
