@@ -14,3 +14,7 @@
 table.hikashop_cart td {
   vertical-align: middle;
 }
+
+.hikashop_cart_title:not(.hikashop_cart_module_product_image_title) {
+  text-align: left;
+}
