@@ -23,7 +23,7 @@ switch($button_type) {
 			$attributes .= ' onclick="window.location=this.getAttribute(\'data-href\')"';
 		}
 ?>
-	<button type="button" class="uk-button" <?php echo $attributes; ?> data-href="<?php echo $this->params->get('fallback_url'); ?>"><span><?php echo $this->params->get('content'); ?></span></button>
+	<button type="button" <?php echo $attributes; ?> data-href="<?php echo $this->params->get('fallback_url'); ?>"><span><?php echo $this->params->get('content'); ?></span></button>
 <?php
 		break;
 }
