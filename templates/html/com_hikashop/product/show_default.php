@@ -14,31 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 ?>
 <div id="hikashop_product_top_part" class="hikashop_product_top_part">
-<!-- TOP BEGIN EXTRA DATA -->
-<?php if(!empty($this->element->extraData->topBegin)) { echo implode("\r\n",$this->element->extraData->topBegin); } ?>
-<!-- EO TOP BEGIN EXTRA DATA -->
-	<h1>
-<!-- NAME -->
-		<span id="hikashop_product_name_main" class="hikashop_product_name_main" itemprop="name"><?php
-			if(hikashop_getCID('product_id') != $this->element->product_id && isset($this->element->main->product_name))
-				echo $this->element->main->product_name;
-			else
-				echo $this->element->product_name;
-		?></span>
-<!-- EO NAME -->
-<!-- CODE -->
-<?php if ($this->config->get('show_code')) { ?>
-		<span id="hikashop_product_code_main" class="hikashop_product_code_main"><?php
-			echo $this->element->product_code;
-		?></span>
-<?php } ?>
-<!-- EO CODE -->
-		<meta itemprop="sku" content="<?php echo $this->element->product_code; ?>">
-		<meta itemprop="productID" content="<?php echo $this->element->product_code; ?>">
-	</h1>
-<!-- TOP END EXTRA DATA -->
-<?php if(!empty($this->element->extraData->topEnd)) { echo implode("\r\n", $this->element->extraData->topEnd); } ?>
-<!-- EO TOP END EXTRA DATA -->
+
 <!-- SOCIAL NETWORKS -->
 <?php
 	$this->setLayout('show_block_social');
@@ -65,6 +41,33 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 	<div id="hikashop_product_right_part" class="hikashop_product_right_part hkc-md-6">
+
+		<!-- TOP BEGIN EXTRA DATA -->
+<?php if(!empty($this->element->extraData->topBegin)) { echo implode("\r\n",$this->element->extraData->topBegin); } ?>
+<!-- EO TOP BEGIN EXTRA DATA -->
+	<h2>
+<!-- NAME -->
+		<span id="hikashop_product_name_main" class="hikashop_product_name_main" itemprop="name"><?php
+			if(hikashop_getCID('product_id') != $this->element->product_id && isset($this->element->main->product_name))
+				echo $this->element->main->product_name;
+			else
+				echo $this->element->product_name;
+		?></span>
+<!-- EO NAME -->
+<!-- CODE -->
+<?php if ($this->config->get('show_code')) { ?>
+		<span id="hikashop_product_code_main" class="hikashop_product_code_main"><?php
+			echo $this->element->product_code;
+		?></span>
+<?php } ?>
+<!-- EO CODE -->
+		<meta itemprop="sku" content="<?php echo $this->element->product_code; ?>">
+		<meta itemprop="productID" content="<?php echo $this->element->product_code; ?>">
+	</h2>
+<!-- TOP END EXTRA DATA -->
+<?php if(!empty($this->element->extraData->topEnd)) { echo implode("\r\n", $this->element->extraData->topEnd); } ?>
+<!-- EO TOP END EXTRA DATA -->
+
 <!-- RIGHT BEGIN EXTRA DATA -->
 <?php if(!empty($this->element->extraData->rightBegin)) { echo implode("\r\n",$this->element->extraData->rightBegin); } ?>
 <!-- EO RIGHT BEGIN EXTRA DATA -->
@@ -171,6 +174,11 @@ defined('_JEXEC') or die('Restricted access');
 	}
 ?>
 <!-- EO PRICE WITH OPTIONS -->
+<!-- DESCRIPTION -->
+<div id="hikashop_product_description_main" class="hikashop_product_description_main" itemprop="description"><?php
+		echo JHTML::_('content.prepare',preg_replace('#<hr *id="system-readmore" */>#i','',$this->element->product_description));
+	?></div>
+<!-- EO DESCRIPTION -->
 <!-- ADD TO CART BUTTON -->
 <?php
 	if(empty($this->element->characteristics) || $this->params->get('characteristic_display') != 'list') {
@@ -232,11 +240,7 @@ defined('_JEXEC') or die('Restricted access');
 <!-- BOTTOM BEGIN EXTRA DATA -->
 <?php if(!empty($this->element->extraData->bottomBegin)) { echo implode("\r\n",$this->element->extraData->bottomBegin); } ?>
 <!-- EO BOTTOM BEGIN EXTRA DATA -->
-<!-- DESCRIPTION -->
-	<div id="hikashop_product_description_main" class="hikashop_product_description_main" itemprop="description"><?php
-		echo JHTML::_('content.prepare',preg_replace('#<hr *id="system-readmore" */>#i','',$this->element->product_description));
-	?></div>
-<!-- EO DESCRIPTION -->
+
 <!-- MANUFACTURER URL -->
 	<span id="hikashop_product_url_main" class="hikashop_product_url_main"><?php
 		if(!empty($this->element->product_url)) {

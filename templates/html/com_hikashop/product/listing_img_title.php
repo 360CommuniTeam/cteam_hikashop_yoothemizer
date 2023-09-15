@@ -60,18 +60,18 @@ if(!empty($this->row->extraData->top)) { echo implode("\r\n",$this->row->extraDa
 
 <div class="uk-card-body">
 <!-- NAME -->
-	<h2 class="uk-h4 uk-margin-remove-bottom hikashop_product_name">
+	<h3 class="uk-h4 uk-margin-remove-bottom hikashop_product_name">
 <?php
 		$this->link_content = $this->row->product_name;
 		$this->setLayout('show_popup');
 		echo $this->loadTemplate();
 ?>
-	</h2>
+	</h3>
 	<meta itemprop="name" content="<?php echo $this->escape(strip_tags($this->row->product_name)); ?>">
 <!-- EO NAME -->
 
 <!-- PRICE -->
-<div class="uk-text-meta uk-margin-small uk-margin-remove-top">
+<h4 class="uk-text-meta uk-margin-small uk-margin-remove-top">
 	<?php
 		if($this->params->get('show_price','-1')=='-1'){
 			$config =& hikashop_config();
@@ -82,7 +82,7 @@ if(!empty($this->row->extraData->top)) { echo implode("\r\n",$this->row->extraDa
 			echo $this->loadTemplate();
 		}
 	?>
-</div>
+</h4>
 <!-- EO PRICE -->
 
 <!-- CODE -->

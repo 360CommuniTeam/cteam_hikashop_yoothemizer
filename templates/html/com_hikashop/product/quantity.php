@@ -123,7 +123,7 @@ if($waitlist_btn) {
 <!-- QUANTITY INPUT -->
 <?php
 
-if(($add_to_cart || $add_to_wishlist) && $display_quantity_field) {
+if(($add_to_cart || $add_to_wishlist) && $display_quantity_field && $this->element->product_max_per_order != 1) {
 	$this->setLayout('show_quantity');
 	echo $this->loadTemplate();
 }
@@ -132,7 +132,7 @@ if(($add_to_cart || $add_to_wishlist) && $display_quantity_field) {
 <!-- ADD TO CART BUTTON -->
 <?php
 if($add_to_cart) {
-	$attributes = ' class="' . $css_button . ' ' . $css_button_cart. '" onclick="if(window.hikashop.addToCart) { return window.hikashop.addToCart(this); }" data-addToCart="'.$this->row->product_id.'" data-addTo-div="hikashop_product_form" data-addTo-class="add_in_progress"';
+	$attributes = ' class="uk-button uk-button-primary ' . $css_button . ' ' . $css_button_cart. '" onclick="if(window.hikashop.addToCart) { return window.hikashop.addToCart(this); }" data-addToCart="'.$this->row->product_id.'" data-addTo-div="hikashop_product_form" data-addTo-class="add_in_progress"';
 	if(!empty($this->last_quantity_field_id))
 		$attributes .= ' id="'.$this->last_quantity_field_id.'_add_to_cart_button"';
 	if(!empty($this->row->product_addtocart_message))
