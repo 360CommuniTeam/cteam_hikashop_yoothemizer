@@ -1,0 +1,16 @@
+.uk-input-number-noarrow::-webkit-outer-spin-button,
+.uk-input-number-noarrow::-webkit-inner-spin-button,
+.uk-input-quantity .uk-input::-webkit-outer-spin-button,
+.uk-input-quantity .uk-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.uk-input-number-noarrow,
+.uk-input-quantity .uk-input {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+table.hikashop_cart td {
+  vertical-align: middle;
+}
