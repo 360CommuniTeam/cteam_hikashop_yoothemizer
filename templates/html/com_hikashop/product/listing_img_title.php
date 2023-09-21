@@ -24,7 +24,7 @@ if(!empty($this->row->extraData->top)) { echo implode("\r\n",$this->row->extraDa
 <div class="<?php echo implode(' ',$hk_main_classes); ?>" id="div_<?php echo $mainDivName.'_'.$this->row->product_id;  ?>">
 	<div class="uk-card-media-top">
 	<!-- IMAGE -->
-		<div class="hikashop_product_image">
+		<div class="hikashop_product_image uk-text-center">
 			<div class="hikashop_product_image_subdiv">
 	<?php
 		$img = $this->image->getThumbnail(
