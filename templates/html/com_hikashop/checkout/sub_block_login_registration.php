@@ -7,7 +7,9 @@
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
-?><fieldset class="hkform-horizontal">
+?>
+<div class="uk-form-horizontal">
+<fieldset class="">
 <?php
 $labelcolumnclass = 'hkc-sm-4';
 $inputcolumnclass = 'hkc-sm-8';
@@ -37,10 +39,10 @@ if(!empty($this->options['registration_registration'])) {
 }
 ?>
 <!-- EMAIL -->
-	<div class="hkform-group control-group hikashop_registration_email_line">
-		<label id="emailmsg" for="register_email" class="<?php echo $labelcolumnclass;?> hkcontrol-label" title=""><?php echo JText::_('HIKA_EMAIL'); ?>*</label>
-		<div class="<?php echo $inputcolumnclass;?>">
-			<input <?php if($this->config->get('show_email_confirmation_field',0)){echo ' autocomplete="off"';} ?> type="text" name="data[register][email]" id="register_email" value="<?php echo $this->escape($this->mainUser->get( 'email' ));?>" class="<?php echo HK_FORM_CONTROL_CLASS; ?> validate-email" maxlength="100" size="30" />
+	<div class="uk-margin hikashop_registration_email_line">
+	<label id="emailmsg" for="register_email" class="uk-form-label hkcontrol-label"><?= JText::_('HIKA_EMAIL') ?></label>
+		<div class="uk-form-controls">
+			<input type="text" id="register_email" placeholder="<?= JText::_('HIKA_EMAIL') ?>" name="data[register][email]" class="uk-input validate-email"  value="<?= $this->escape($this->mainUser->get( 'email' ));?>"/>
 		</div>
 	</div>
 <!-- EO EMAIL -->
@@ -67,76 +69,64 @@ if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$
 <?php
 if(!empty($this->options['registration_registration']) || !empty($this->options['registration_password'])) {
 ?>
-	<div class="hkform-group control-group hikashop_registration_password_line" id="hikashop_registration_password_line">
-		<label id="pwmsg" for="register_password" class="<?php echo $labelcolumnclass;?> hkcontrol-label" title=""><?php echo JText::_('HIKA_PASSWORD'); ?>*</label>
-		<div class="<?php echo $inputcolumnclass;?>">
-<?php
-	if(HIKASHOP_J40) {
-		$com_usersParams = \Joomla\CMS\Component\ComponentHelper::getParams('com_users');
-		$minLength    = (int) $com_usersParams->get('minimum_length', 12);
-		$minIntegers  = (int) $com_usersParams->get('minimum_integers', 0);
-		$minSymbols   = (int) $com_usersParams->get('minimum_symbols', 0);
-		$minUppercase = (int) $com_usersParams->get('minimum_uppercase', 0);
-		$minLowercase = (int) $com_usersParams->get('minimum_lowercase', 0);
-		$rules = $minLowercase > 0 || $minUppercase > 0 || $minSymbols > 0 || $minIntegers > 0 || $minLength > 0;
-		$layout = new JLayoutFile('joomla.form.field.password');
-		echo $layout->render(array(
-			'meter' => true,
-			'class' => 'validate-password',
-			'forcePassword' => true,
-			'lock' => false,
-			'rules' => $rules,
-			'hint' => '',
-			'readonly' => false,
-			'disabled' => false,
-			'required' => true,
-			'autofocus' => false,
-			'dataAttribute' => 'autocomplete="new-password"',
-			'name' => 'data[register][password]',
-			'id' => 'register_password',
-			'minLength' => $minLength,
-			'minIntegers' => $minIntegers,
-			'minSymbols' => $minSymbols,
-			'minUppercase' => $minUppercase,
-			'minLowercase' => $minLowercase,
-			'value' => '',
-		));
-	} else {
-?>
-			<input autocomplete="off" type="password" name="data[register][password]" id="register_password" value="" class="<?php echo HK_FORM_CONTROL_CLASS; ?> validate-password" size="30" >
-<?php 
-	}
-?>
+	<div class="uk-margin hikashop_registration_password_line" id="hikashop_registration_password_line">
+		<label id="pwmsg" for="register_password" class="uk-form-label hkcontrol-label"><?php echo JText::_('HIKA_PASSWORD') ?></label>
+		<div class="uk-form-controls">
+		<?php
+			$com_usersParams = \Joomla\CMS\Component\ComponentHelper::getParams('com_users');
+			$minLength    = (int) $com_usersParams->get('minimum_length', 12);
+			$minIntegers  = (int) $com_usersParams->get('minimum_integers', 0);
+			$minSymbols   = (int) $com_usersParams->get('minimum_symbols', 0);
+			$minUppercase = (int) $com_usersParams->get('minimum_uppercase', 0);
+			$minLowercase = (int) $com_usersParams->get('minimum_lowercase', 0);
+			$rules = $minLowercase > 0 || $minUppercase > 0 || $minSymbols > 0 || $minIntegers > 0 || $minLength > 0;
+			$layout = new JLayoutFile('joomla.form.field.password');
+			echo $layout->render(array(
+				'meter' => true,
+				'class' => 'uk-input validate-password',
+				'forcePassword' => true,
+				'lock' => false,
+				'rules' => $rules,
+				'hint' => '',
+				'readonly' => false,
+				'disabled' => false,
+				'required' => true,
+				'autofocus' => false,
+				'dataAttribute' => 'autocomplete="new-password"',
+				'name' => 'data[register][password]',
+				'id' => 'register_password',
+				'minLength' => $minLength,
+				'minIntegers' => $minIntegers,
+				'minSymbols' => $minSymbols,
+				'minUppercase' => $minUppercase,
+				'minLowercase' => $minLowercase,
+				'value' => '',
+			));
+		?>
 		</div>
 	</div>
-	<div class="hkform-group control-group hikashop_registration_password2_line" id="hikashop_registration_password2_line">
-		<label id="pw2msg" for="register_password2" class="<?php echo $labelcolumnclass;?> hkcontrol-label" title=""><?php echo JText::_('HIKA_VERIFY_PASSWORD'); ?>*</label>
-		<div class="<?php echo $inputcolumnclass;?>">
-<?php
-	if(HIKASHOP_J40) {
-		$layout = new JLayoutFile('joomla.form.field.password');
-		echo $layout->render(array(
-			'meter' => false,
-			'class' => 'validate-password',
-			'forcePassword' => true,
-			'lock' => false,
-			'rules' => false,
-			'hint' => '',
-			'readonly' => false,
-			'disabled' => false,
-			'required' => true,
-			'autofocus' => false,
-			'dataAttribute' => 'autocomplete="new-password"',
-			'name' => 'data[register][password2]',
-			'id' => 'register_password2',
-			'value' => '',
-		));
-	} else {
-?>
-			<input autocomplete="off" type="password" name="data[register][password2]" id="register_password2" value="" class="<?php echo HK_FORM_CONTROL_CLASS; ?> validate-password" size="30" >
-<?php 
-	}
-?>
+	<div class="uk-margin hikashop_registration_password2_line" id="hikashop_registration_password2_line">
+		<label id="pw2msg" for="register_password2" class="uk-form-label hkcontrol-label"><?php echo JText::_('HIKA_VERIFY_PASSWORD') ?></label>
+		<div class="uk-form-controls">
+			<?php
+				$layout = new JLayoutFile('joomla.form.field.password');
+				echo $layout->render(array(
+					'meter' => false,
+					'class' => 'uk-input validate-password',
+					'forcePassword' => true,
+					'lock' => false,
+					'rules' => false,
+					'hint' => '',
+					'readonly' => false,
+					'disabled' => false,
+					'required' => true,
+					'autofocus' => false,
+					'dataAttribute' => 'autocomplete="new-password"',
+					'name' => 'data[register][password2]',
+					'id' => 'register_password2',
+					'value' => '',
+				));
+			?>
 		</div>
 	</div>
 <?php
@@ -231,7 +221,7 @@ if(!empty($this->options['address_on_registration']) && !empty($this->extraField
 	$type = 'address';
 ?>
 <!-- BILLING ADDRESS TITLE -->
-	<div class="">
+	<div class="uk-h3">
 		<legend><?php echo JText::_( 'ADDRESS_INFORMATION' ); ?></legend>
 	</div>
 <!-- EO BILLING ADDRESS TITLE -->
@@ -244,25 +234,45 @@ if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$
 <?php
 	foreach($this->extraFields[$type] as $fieldName => $oneExtraField) {
 ?>
-	<div class="hkform-group control-group hikashop_registration_<?php echo $fieldName;?>_line" id="hikashop_<?php echo $type . '_' . $this->step . '_' . $this->module_position . '_' . $oneExtraField->field_namekey; ?>">
+	<div class="uk-margin hikashop_registration_<?php echo $fieldName;?>_line" id="hikashop_<?php echo $type . '_' . $this->step . '_' . $this->module_position . '_' . $oneExtraField->field_namekey; ?>">
+		
+	
 <?php
-		$classname = $labelcolumnclass.' hkcontrol-label';
+		$classname = 'uk-form-label';
 		echo $this->fieldsClass->getFieldName($oneExtraField, true, $classname);
 ?>
-		<div class="<?php echo $inputcolumnclass;?>">
+		<div class="uk-form-controls">
 <?php
+		$ukInputClass = 'uk-input';
+		switch($oneExtraField->field_type) {
+			case 'zone':
+			case 'select':
+				$ukInputClass = 'uk-select';
+				break;
+			case 'checkbox':
+				$ukInputClass = 'uk-checkbox';
+				break;
+			case 'textarea':
+				$ukInputClass = 'uk-textarea';
+				break;
+			case 'radio':
+				$ukInputClass = 'uk-radio';
+				break;
+			default:
+				break;
+		}
 		$onWhat = ($oneExtraField->field_type == 'radio') ? 'onclick' : 'onchange';
-		echo $this->fieldsClass->display(
+		echo str_replace('class="'. HK_FORM_SELECT_CLASS.'"', 'class="' . $ukInputClass . ' ' . HK_FORM_CONTROL_CLASS . '"', $this->fieldsClass->display(
 				$oneExtraField,
 				@$this->$type->$fieldName,
 				'data['.$type.']['.$fieldName.']',
 				false,
-				'class="'.HK_FORM_CONTROL_CLASS.'" '.$onWhat.'="window.hikashop.toggleField(this.value,\''.$fieldName.'\',\''.$type . '_' . $this->step . '_' . $this->module_position.'\',0,\'hikashop_\');"',
+				'class="' . $ukInputClass . ' ' . HK_FORM_CONTROL_CLASS . '" '.$onWhat.'="window.hikashop.toggleField(this.value,\''.$fieldName.'\',\''.$type . '_' . $this->step . '_' . $this->module_position.'\',0,\'hikashop_\');"',
 				false,
 				$this->extraFields[$type],
 				@$this->$type,
 				false
-		);
+		));
 ?>
 		</div>
 	</div>
@@ -453,6 +463,7 @@ if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$
 	<input type="hidden" name="data[register][id]" value="<?php echo (int)$this->mainUser->get('id');?>" />
 	<input type="hidden" name="data[register][gid]" value="<?php echo (int)$this->mainUser->get('gid');?>" />
 </fieldset>
+</div>
 <?php
 	if(!empty($this->options['js'])) {
 ?>
