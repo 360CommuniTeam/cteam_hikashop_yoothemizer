@@ -29,111 +29,108 @@ if(!HIKASHOP_RESPONSIVE) {
 	$labelcolumnclass = 'hkc-sm-4';
 	$inputcolumnclass = 'hkc-sm-8';
 ?>
-<fieldset class="hkform-horizontal">
-<!-- TOP OLD EXTRA DATA -->
-<?php
-if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$this->module_position]->loginTop)) { echo implode("\r\n", $this->extraData[$this->module_position]->loginTop); }
-?>
-<!-- EO OLD TOP EXTRA DATA -->
-<!-- OLD USERNAME -->
-	<div class="hkform-group control-group hikashop_login_username_line">
-		<label for="username" class="<?php echo $labelcolumnclass;?> hkcontrol-label"><?php echo JText::_('HIKA_USERNAME') ?></label>
-		<div class="<?php echo $inputcolumnclass;?>">
-			<input type="text" id="username" name="login[username]" class="<?php echo HK_FORM_CONTROL_CLASS; ?>" alt="<?php echo JText::_('HIKA_USERNAME') ?>" size="18" />
-		</div>
-	</div>
-<!-- EO OLD USERNAME -->
-<!-- OLD PASSWORD -->
-	<div class="hkform-group control-group hikashop_login_password_line">
-		<label for="passwd" class="<?php echo $labelcolumnclass;?> hkcontrol-label"><?php echo JText::_('HIKA_PASSWORD') ?></label>
-		<div class="<?php echo $inputcolumnclass;?>">
-		<?php
-	if(HIKASHOP_J40) {
-		$layout = new JLayoutFile('joomla.form.field.password');
-		echo $layout->render(array(
-			'meter' => false,
-			'class' => '',
-			'forcePassword' => true,
-			'lock' => false,
-			'rules' => false,
-			'hint' => JText::_('HIKA_PASSWORD'),
-			'readonly' => false,
-			'disabled' => false,
-			'required' => true,
-			'autofocus' => false,
-			'dataAttribute' => 'autocomplete="current-password"',
-			'name' => 'login[passwd]',
-			'id' => 'passwd',
-			'value' => '',
-		));
-	} else {
-?>
-			<input type="password" id="passwd" name="login[passwd]" class="<?php echo HK_FORM_CONTROL_CLASS; ?>" size="18" alt="<?php echo JText::_('HIKA_PASSWORD') ?>" />
-<?php }  ?>
-		</div>
-	</div>
-<!-- EO OLD PASSWORD -->
-<!-- OLD REMEMBER ME -->
-<?php
-	if(JPluginHelper::isEnabled('system', 'remember')) {
-?>
-	<div class="hkform-group control-group hikashop_login_remember_line">
-		<div class="<?php echo $labelcolumnclass;?> hkcontrol-label"></div>
-		<div class=" <?php echo $inputcolumnclass;?>">
-			<div class="hkcheckbox">
-				<label for="remember">
-					<input type="checkbox" id="remember" name="login[remember]" value="yes" class="hkform-control" alt="<?php echo JText::_('HIKA_REMEMBER_ME') ?>" />
-					<?php echo JText::_('HIKA_REMEMBER_ME') ?>
-				</label>
+<div class="uk-form-horizontal">
+	<fieldset class="">
+	<!-- TOP OLD EXTRA DATA -->
+	<?php
+	if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$this->module_position]->loginTop)) { echo implode("\r\n", $this->extraData[$this->module_position]->loginTop); }
+	?>
+	<!-- EO OLD TOP EXTRA DATA -->
+	<!-- OLD USERNAME -->
+		<div class="uk-margin hikashop_login_username_line">
+			<label for="username" class="uk-form-label hkcontrol-label"><?php echo JText::_('HIKA_USERNAME') ?></label>
+			<div class="uk-form-controls">
+				<input type="text" id="username" placeholder="<?= JText::_('HIKA_USERNAME') ?>" name="login[username]" class="uk-input" alt="<?= JText::_('HIKA_USERNAME') ?>"/>
 			</div>
 		</div>
-	</div>
-<?php
-	}
-?>
-<!-- EO OLD REMEMBER ME -->
-<!-- OLD SOCIAL BUTTONS -->
-<?php
-	$this->setLayout('sub_block_login_social');
-	echo $this->loadTemplate();
-?>
-<!-- EO OLD SOCIAL BUTTONS -->
-<!-- OLD LOGIN BUTTON -->
-	<div class="hkform-group control-group hikashop_login_button_line">
-		<div class="<?php echo $labelcolumnclass;?> hkcontrol-label"></div>
-		<div class=" <?php echo $inputcolumnclass;?>">
-			<button type="submit" onclick="window.checkout.submitLogin(<?php echo $this->step; ?>,<?php echo $this->module_position; ?>, 'login'); return false;" class="<?php echo $this->config->get('css_button','hikabtn'); ?> hikabtn_checkout_login_form">
-				<?php echo JText::_('HIKA_LOGIN'); ?>
-			</button>
+	<!-- EO OLD USERNAME -->
+	<!-- OLD PASSWORD -->
+		<div class="uk-margin hikashop_login_password_line">
+			<label for="passwd" class="uk-form-label hkcontrol-label"><?php echo JText::_('HIKA_PASSWORD') ?></label>
+			<div class="uk-form-controls">
+			<?php
+				$layout = new JLayoutFile('joomla.form.field.password');
+				echo $layout->render(array(
+					'meter' => false,
+					'class' => 'uk-input',
+					'forcePassword' => true,
+					'lock' => false,
+					'rules' => false,
+					'hint' => JText::_('HIKA_PASSWORD'),
+					'readonly' => false,
+					'disabled' => false,
+					'required' => true,
+					'autofocus' => false,
+					'dataAttribute' => 'autocomplete="current-password"',
+					'name' => 'login[passwd]',
+					'id' => 'passwd',
+					'value' => '',
+				));
+  			?>
+			</div>
 		</div>
-	</div>
-<!-- EO OLD LOGIN BUTTON -->
-<!-- OLD FORGOT PASSWORD -->
-	<div class="hkform-group control-group hikashop_login_forgot_password_line">
-		<div class="<?php echo $labelcolumnclass;?> hkcontrol-label"></div>
-		<div class=" <?php echo $inputcolumnclass;?>">
-			<a href="<?php echo JRoute::_( $reset_url ); ?>">
-				<?php echo JText::_('HIKA_FORGOT_YOUR_PASSWORD'); ?>
-			</a>
+	<!-- EO OLD PASSWORD -->
+	<!-- OLD REMEMBER ME -->
+	<?php
+		if(JPluginHelper::isEnabled('system', 'remember')) {
+	?>
+
+		<div class="uk-margin hikashop_login_remember_line">
+			<div class="uk-form-controls uk-form-controls-text">
+				<label><input id="remember" class="uk-checkbox" type="checkbox" name="login[remember]" value="yes" > <?= JText::_('HIKA_REMEMBER_ME') ?></label>
+			</div>
 		</div>
-	</div>
-<!-- EO OLD FORGOT PASSWORD -->
-<!-- OLD FORGOT USERNAME -->
-	<div class="hkform-group control-group hikashop_login_forgot_username_line">
-		<div class="<?php echo $labelcolumnclass;?> hkcontrol-label"></div>
-		<div class=" <?php echo $inputcolumnclass;?>">
-			<a href="<?php echo JRoute::_( $remind_url ); ?>">
-				<?php echo JText::_('HIKA_FORGOT_YOUR_USERNAME'); ?>
-			</a>
+
+	<?php
+		}
+	?>
+	<!-- EO OLD REMEMBER ME -->
+	<!-- OLD SOCIAL BUTTONS -->
+	<?php
+		$this->setLayout('sub_block_login_social');
+		echo $this->loadTemplate();
+	?>
+	<!-- EO OLD SOCIAL BUTTONS -->
+	<!-- OLD LOGIN BUTTON -->
+		<div class="uk-margin hikashop_login_button_line">
+			<div class="uk-form-controls">
+				<button
+					type="submit"
+					onclick="window.checkout.submitLogin(<?php echo $this->step; ?>,<?php echo $this->module_position; ?>, 'login'); return false;"
+					class="uk-button uk-button-primary <?= $this->config->get('css_button','hikabtn'); ?> hikabtn_checkout_login_form"
+				>
+					<?php echo JText::_('HIKA_LOGIN'); ?>
+				</button>
+			</div>
 		</div>
-	</div>
-<!-- EO OLD FORGOT USERNAME -->
-<!-- OLD BOTTOM EXTRA DATA -->
-<?php
-if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$this->module_position]->loginBottom)) { echo implode("\r\n", $this->extraData[$this->module_position]->loginBottom); }
-?>
-<!-- EO OLD BOTTOM EXTRA DATA -->
-</fieldset>
+	<!-- EO OLD LOGIN BUTTON -->
+	<!-- OLD FORGOT PASSWORD -->
+		<div class="hkform-group control-group hikashop_login_forgot_password_line">
+			<div class="uk-form-label  hkcontrol-label"></div>
+			<div class=" uk-form-controls">
+				<a href="<?php echo JRoute::_( $reset_url ); ?>">
+					<?php echo JText::_('HIKA_FORGOT_YOUR_PASSWORD'); ?>
+				</a>
+			</div>
+		</div>
+	<!-- EO OLD FORGOT PASSWORD -->
+	<!-- OLD FORGOT USERNAME -->
+		<div class="hkform-group control-group hikashop_login_forgot_username_line">
+			<div class="uk-form-label  hkcontrol-label"></div>
+			<div class=" uk-form-controls">
+				<a href="<?php echo JRoute::_( $remind_url ); ?>">
+					<?php echo JText::_('HIKA_FORGOT_YOUR_USERNAME'); ?>
+				</a>
+			</div>
+		</div>
+	<!-- EO OLD FORGOT USERNAME -->
+	<!-- OLD BOTTOM EXTRA DATA -->
+	<?php
+	if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$this->module_position]->loginBottom)) { echo implode("\r\n", $this->extraData[$this->module_position]->loginBottom); }
+	?>
+	<!-- EO OLD BOTTOM EXTRA DATA -->
+	</fieldset>
+</div>
 <?php
 
 } else {

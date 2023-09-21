@@ -16,13 +16,66 @@ if(empty($this->ajax)) {
 if(!window.checkout) window.checkout = {};
 window.checkout.refreshLogin = function(step, id) { return window.checkout.refreshBlock('login', step, id); };
 window.checkout.submitLogin = function(step, id, action) {
-	if(action === undefined)
-		action = '';
-	var el = document.getElementById('login_view_action_' + step + '_' + id);
-	if(el)
-		el.value = action;
-	return window.checkout.submitBlock('login', step, id);
-};
+		let data, type = 'login';
+		if(action === undefined)
+			action = '';
+		var el = document.getElementById('login_view_action_' + step + '_' + id);
+		if(el)
+			el.value = action;
+		
+		if((id === null || id === undefined) && typeof(step) == 'object') {
+			info = this.getBlockPos(step);
+			if(!info) return false;
+			step = info.step;
+			id = info.pos;
+		}
+		var type_clean = type.replace(/\./g,'-'), el_name = "hikashop_checkout_" + type_clean + "_" + step + "_" + id, url = null, formData = null,
+			t = this, d = document, w = window, o = w.Oby,
+			el = d.getElementById(el_name);
+
+		if(!el)
+			return false;
+
+		if(!window.checkout.urls.submit || !window.checkout.token) {
+			var f = d.getElementById('hikashop_checkout_form');
+			if(!f) return false;
+			f.submit();
+			return false;
+		}
+
+		var triggers = o.fireAjax('checkoutBlockSubmit', {'type': type, 'cid': step, 'pos': id, 'element': el, 'data': data});
+		if(triggers !== false && triggers.length > 0)
+			return true;
+
+		if(data === undefined || !data) {
+			formData = o.getFormData(el);
+		} else if(typeof(data) == "string") {
+			formData = data;
+		} else {
+			formData = "";
+			for(var k in data) {
+				if( formData != "" ) formData += "&";
+				formData += encodeURI(k) + "=" + encodeURIComponent(data[k]);
+			}
+		}
+
+		t.setLoading(el, true, true);
+
+		var url = window.checkout.urls.submit,
+			params = {mode:"POST", data: formData};
+		url = t.handleParams({'type': type, 'cid': step, 'pos': id, 'token': 1 }, url, params);
+
+		o.xRequest(url, params, function(x,p) {
+			if(x.responseText == '401')
+				window.location.reload(true);
+			if(x.status == 303 || x.status == 301) {
+				console.log('[HikaShop Checkout Error] Something on the server side requested a redirect to "' + x.getResponseHeader('Location') + '". It\'s probably a third party plugin which shouldn\'t do that. The page was reload to avoid any issue.');
+				window.location.reload(true);
+			}
+			window.location.reload(true);
+		});
+		return false;
+	};
 </script>
 <?php
 } elseif(!empty($this->options['waiting_validation'])) {
@@ -49,7 +102,7 @@ if(!empty($this->options['current_login'])) {
 		<?php echo JText::_('HIKA_EMAIL'); ?><span class="hikashop_checkout_guest_email_separator">:</span>
 	</span>
 	<span id="hikashop_checkout_guest_email_value"><?php echo $this->options['current_login']->user_email; ?></span>
-	<a href="" class="<?php echo $this->config->get('css_button','hikabtn'); ?> hikabtn_checkout_guest_logout" onclick="window.checkout.submitBlock('login', <?php echo $this->step; ?>, <?php echo $this->module_position; ?>, 'hikashop_checkout_guest_logout=1'); this.disabled=true; window.Oby.addClass(this, 'next_button_disabled'); return false;"><?php
+	<a href="" class="uk-button uk-button-default <?= $this->config->get('css_button','hikabtn'); ?> hikabtn_checkout_guest_logout" onclick="window.checkout.submitBlock('login', <?php echo $this->step; ?>, <?php echo $this->module_position; ?>, 'hikashop_checkout_guest_logout=1'); this.disabled=true; window.Oby.addClass(this, 'next_button_disabled'); return false;"><?php
 		echo JText::_('CHANGE_GUEST_INFORMATION');
 ?>
 	</a>
@@ -114,8 +167,8 @@ if(invalid_field)
 	if($this->options['display_method'] == 0) {
 		if(empty($this->options['current_login']) && (!empty($this->options['registration']) || !empty($this->options['registration_not_allowed'])) && !empty($this->options['show_login'])) {
 ?>
-	<div class="hk-container-fluid">
-		<div class="hkc-lg-4">
+	<div uk-grid>
+		<div class="uk-width-1-2">
 <?php
 		}
 
@@ -134,7 +187,7 @@ if(invalid_field)
 		if(empty($this->options['current_login']) && (!empty($this->options['registration']) || !empty($this->options['registration_not_allowed'])) && !empty($this->options['show_login'])) {
 ?>
 		</div>
-		<div class="hkc-lg-8">
+		<div class="uk-width-1-2">
 <?php
 		}
 		if(!empty($this->options['override_registration']) && empty($this->options['registration_guest'])) {
