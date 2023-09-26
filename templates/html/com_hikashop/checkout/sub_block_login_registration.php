@@ -92,7 +92,7 @@ if(!empty($this->options['registration_registration']) || !empty($this->options[
 				'disabled' => false,
 				'required' => true,
 				'autofocus' => false,
-				'dataAttribute' => 'autocomplete="new-password"',
+				'dataAttribute' => 'autocomplete="new-password" placeholder=" ' . JText::_( 'HIKA_PASSWORD' ) . '"',
 				'name' => 'data[register][password]',
 				'id' => 'register_password',
 				'minLength' => $minLength,
@@ -121,7 +121,7 @@ if(!empty($this->options['registration_registration']) || !empty($this->options[
 					'disabled' => false,
 					'required' => true,
 					'autofocus' => false,
-					'dataAttribute' => 'autocomplete="new-password"',
+					'dataAttribute' => 'autocomplete="new-password" placeholder=" ' . JText::_( 'HIKA_VERIFY_PASSWORD' ) . '"',
 					'name' => 'data[register][password2]',
 					'id' => 'register_password2',
 					'value' => '',
@@ -232,12 +232,24 @@ if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$
 <!-- EO BILLING ADDRESS TOP EXTRA DATA -->
 <!-- CUSTOM BILLING ADDRESS FIELDS -->
 <?php
+
+
 	foreach($this->extraFields[$type] as $fieldName => $oneExtraField) {
 ?>
 	<div class="uk-margin hikashop_registration_<?php echo $fieldName;?>_line" id="hikashop_<?php echo $type . '_' . $this->step . '_' . $this->module_position . '_' . $oneExtraField->field_namekey; ?>">
 		
 	
 <?php
+
+		$val = preg_replace('#[^a-z0-9]#i', '_', strtoupper($oneExtraField->field_realname));
+		$app = JFactory::getApplication();
+		if(hikashop_isClient('administrator') && strcmp(JText::_($val), strip_tags(JText::_($val))) !== 0)
+			$realname = $val;
+		else
+			$realname = JText::_($val);
+		if($val == $realname)
+			$realname = $name;
+
 		$classname = 'uk-form-label';
 		echo $this->fieldsClass->getFieldName($oneExtraField, true, $classname);
 ?>
@@ -267,7 +279,7 @@ if(!empty($this->extraData[$this->module_position]) && !empty($this->extraData[$
 				@$this->$type->$fieldName,
 				'data['.$type.']['.$fieldName.']',
 				false,
-				'class="' . $ukInputClass . ' ' . HK_FORM_CONTROL_CLASS . '" '.$onWhat.'="window.hikashop.toggleField(this.value,\''.$fieldName.'\',\''.$type . '_' . $this->step . '_' . $this->module_position.'\',0,\'hikashop_\');"',
+				'placeholder="'.$realname.'" class="' . $ukInputClass . ' ' . HK_FORM_CONTROL_CLASS . '" '.$onWhat.'="window.hikashop.toggleField(this.value,\''.$fieldName.'\',\''.$type . '_' . $this->step . '_' . $this->module_position.'\',0,\'hikashop_\');"',
 				false,
 				$this->extraFields[$type],
 				@$this->$type,

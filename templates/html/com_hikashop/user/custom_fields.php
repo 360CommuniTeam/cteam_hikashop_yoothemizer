@@ -11,6 +11,16 @@ defined('_JEXEC') or die('Restricted access');
 $type = $this->type;
 $after = array();
 foreach($this->extraFields[$type] as $fieldName => $oneExtraField) {
+
+	$val = preg_replace('#[^a-z0-9]#i', '_', strtoupper($oneExtraField->field_realname));
+	$app = JFactory::getApplication();
+	if(hikashop_isClient('administrator') && strcmp(JText::_($val), strip_tags(JText::_($val))) !== 0)
+		$realname = $val;
+	else
+		$realname = JText::_($val);
+	if($val == $realname)
+		$realname = $name;
+
 	$onWhat='onchange';
 	if($oneExtraField->field_type=='radio')
 		$onWhat='onclick';
@@ -19,7 +29,7 @@ foreach($this->extraFields[$type] as $fieldName => $oneExtraField) {
 		@$this->$type->$fieldName,
 		'data['.$type.']['.$fieldName.']',
 		false,
-		' class="'.HK_FORM_CONTROL_CLASS.'" '.$onWhat.'="window.hikashop.toggleField(this.value,\''.$fieldName.'\',\''.$type.'\',0);"',
+		'placeholder="'.$realname.'" class="'.HK_FORM_CONTROL_CLASS.' uk-input" '.$onWhat.'="window.hikashop.toggleField(this.value,\''.$fieldName.'\',\''.$type.'\',0);"',
 		false,
 		$this->extraFields[$type],
 		$this->$type,
@@ -30,9 +40,9 @@ foreach($this->extraFields[$type] as $fieldName => $oneExtraField) {
 		continue;
 	}
 ?>
-		<div class="hkform-group control-group hikashop_registration_<?php echo $fieldName;?>_line" id="hikashop_<?php echo $type.'_'.$oneExtraField->field_namekey; ?>">
-			<?php echo $this->fieldsClass->getFieldName($oneExtraField,true,'hkc-sm-4 hkcontrol-label');?>
-			<div class="hkc-sm-8">
+		<div class="uk-margin hkform-group control-group hikashop_registration_<?php echo $fieldName;?>_line" id="hikashop_<?php echo $type.'_'.$oneExtraField->field_namekey; ?>">
+			<?php echo $this->fieldsClass->getFieldName($oneExtraField,true,'uk-form-label hkcontrol-label');?>
+			<div class="uk-form-controls">
 				<?php 
 				echo $html; ?>
 			</div>
